@@ -1,0 +1,31 @@
+GET http://localhost:5101/joke
+
+###
+
+GET http://localhost:5101/joke/2
+
+###
+
+POST http://localhost:5101/joke
+Content-Type: application/json
+
+{
+    "Setup": "Why did the developer go broke?",
+    "Punchline": "Because he lost all of his cache...",
+    "FunLevel": 4
+}
+
+###
+
+PUT http://localhost:5101/joke/1
+Content-Type: application/json
+
+{
+    "Setup": "Why did the developer go broke?💀",
+    "Punchline": "Because he lost all of his cache...💸",
+    "FunLevel": 5
+}
+
+###
+
+DELETE http://localhost:5101/joke/1
