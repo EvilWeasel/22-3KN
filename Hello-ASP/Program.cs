@@ -7,6 +7,7 @@ var app = builder.Build();
 
 // Route-Mapping
 app.MapGet("/", () => "Hello World!");
+app.MapGet("/about", () => "Hello, is me!");
 // Beispiel für eine Route mit Query-Parametern
 app.MapGet("/search", (string query) => $"Suchergebnis = '{query}'");
 app.MapGet("/customer", () => {

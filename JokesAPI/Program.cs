@@ -8,7 +8,6 @@ app.MapDelete("/joke/{id}", (int id) => { throw new NotImplementedException(); }
 app.MapPut("/joke/{id}", (int id) => { throw new NotImplementedException(); });
 
 
-
 app.Run();
 
 
