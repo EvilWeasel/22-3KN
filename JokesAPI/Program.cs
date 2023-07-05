@@ -1,15 +1,31 @@
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configuration
 builder.Services.AddEndpointsApiExplorer(); // => API-Dokumentation WebUI
-builder.Services.AddSwaggerGen(); // => Generator
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new() {
+        Title = "DevJokes-Unlimited",
+        Version = "v1",
+        Description = "A basic CRUD-API, which can save and server Developer-Jokes...",
+        Contact = new() {
+            Name = "Tobias Weltner",
+            Email = "tw@lg.com",
+            Url = new("https://www.lg.com")
+        },
+    });
+    options.IncludeXmlComments("""C:\Users\Tobia\source\Unterricht\KN22-3\JokesAPI\bin\Debug\net7.0\JokesAPI.xml""");
+}); // => Generator
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 var jokeRepo = new ConcurrentDictionary<int, Joke>();
 var nextJokeId = 0;
@@ -24,8 +40,14 @@ app.MapGet("/joke/{id}", (int id) =>
         return Results.Ok(joke);
     }
     return Results.NotFound();
-}).Produces<Joke>(StatusCodes.Status200OK)
-    .Produces(StatusCodes.Status404NotFound);
+})
+    .WithName("GetJokeByID")
+    .Produces<Joke>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status404NotFound)
+    .WithOpenApi(options => {
+        options.Parameters[0].Description = "The Filter for which Joke to return";
+        return options;
+    });
 // POST Create one new Joke
 app.MapPost("/joke", (CreateJokeDto newJoke) => 
 {
@@ -44,7 +66,28 @@ app.MapPost("/joke", (CreateJokeDto newJoke) =>
     if (!jokeRepo.TryAdd(newId, jokeToAdd))
         return Results.StatusCode(StatusCodes.Status500InternalServerError);
     return Results.Created($"/joke/{newId}", jokeToAdd);
-});
+})
+    .Produces<Joke>(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status500InternalServerError)
+    .WithOpenApi(options => {
+        options.OperationId = "CreateJoke";
+        options.Description = "Creates a new Joke";
+        options.RequestBody = new OpenApiRequestBody {
+            Content = {
+                ["application/json"] = new OpenApiMediaType {
+                    Schema = new OpenApiSchema {
+                        Reference = new OpenApiReference {
+                            Id = "CreateJokeDto",
+                            Type = ReferenceType.Schema
+                        }
+                    }
+                }
+            }
+        };
+        options.Responses[StatusCodes.Status201Created.ToString()].Description = "Joke was created";
+        options.Responses[StatusCodes.Status500InternalServerError.ToString()].Description = "Something went wrong";
+        return options;
+    });
 app.MapPut("/joke/{id}", (int id, CreateJokeDto updatedJoke) => 
 {
     // Get current value from dictionary
@@ -66,10 +109,12 @@ app.MapDelete("/joke/{id}", (int id) =>
     return Results.Ok(joke);
 });
 
-
 app.Run();
 
-
+// C# XML Inline Documentation
+/// <summary>
+/// Represents a Joke-Object
+/// </summary>
 class Joke
 {
     public int ID { get; set; } // Id of the Joke => Server-Generated
@@ -77,9 +122,10 @@ class Joke
     public string Punchline { get; set; } = "";  // The funny bit
 	public int FunLevel { get; set; } // Integer describing the funnyness of the Joke (0..5)
 }
-
-// DTO => Data-Transfer-Object
-// Abbild eines Datenmodells, das für die Übertragung über HTTP verändert wird
+/// <summary>
+/// DTO => Data-Transfer-Object.
+/// Abbild eines Datenmodells, das für die Übertragung über HTTP verändert wird
+/// </summary>
 record CreateJokeDto(string Setup, string Punchline, int FunLevel);
 
 /*
