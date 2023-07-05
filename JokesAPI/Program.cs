@@ -1,7 +1,15 @@
 using System.Collections.Concurrent;
+using Microsoft.AspNetCore.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configuration
+builder.Services.AddEndpointsApiExplorer(); // => API-Dokumentation WebUI
+builder.Services.AddSwaggerGen(); // => Generator
+
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 var jokeRepo = new ConcurrentDictionary<int, Joke>();
 var nextJokeId = 0;
@@ -16,7 +24,8 @@ app.MapGet("/joke/{id}", (int id) =>
         return Results.Ok(joke);
     }
     return Results.NotFound();
-});
+}).Produces<Joke>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status404NotFound);
 // POST Create one new Joke
 app.MapPost("/joke", (CreateJokeDto newJoke) => 
 {
