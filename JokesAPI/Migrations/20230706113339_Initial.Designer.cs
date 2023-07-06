@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JokesAPI.Migrations
 {
     [DbContext(typeof(JokeContext))]
-    [Migration("20230706094807_Initial")]
+    [Migration("20230706113339_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

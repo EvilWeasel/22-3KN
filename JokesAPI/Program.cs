@@ -26,7 +26,7 @@ builder.Services.AddDbContext<JokeContext>(options =>
 
 #region WasSindStrings
 var string1 = "blabla{asfdsjhk}\ndlkfjsld"; // String
-// var string2 = $"blabla{asfdsjhk}\ndlkfjsld"; // Interpolated-String
+// var string2 = $"blabla{userInput}\ndlkfjsld"; // Interpolated-String
 var string3 = """
 
 blabla{asfdsjhk}\ndlkfjsld
@@ -45,16 +45,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// Legacy Code - Don't use!
 var jokeRepo = new ConcurrentDictionary<int, Joke>();
 var nextJokeId = 0;
 
 // GET All Jokes
-app.MapGet("/joke", () => jokeRepo.Values);
+app.MapGet("/joke", (JokeContext context) => context.Joke.ToList()); // jokeRepo.Values
 // GET One Joke by ID
-app.MapGet("/joke/{id}", (int id) => 
+app.MapGet("/joke/{id}", (int id, JokeContext context) => 
 {
-    if (jokeRepo.TryGetValue(id, out Joke? joke))
+    var joke = context.Joke.Find(id);
+    if (joke != null)
     {
         return Results.Ok(joke);
     }
@@ -68,23 +69,24 @@ app.MapGet("/joke/{id}", (int id) =>
         return options;
     });
 // POST Create one new Joke
-app.MapPost("/joke", (CreateJokeDto newJoke) => 
+app.MapPost("/joke", (CreateJokeDto newJoke, JokeContext context) => 
 {
     // Create a new ID for the joke
-    var newId = Interlocked.Increment(ref nextJokeId); // Threadsafe Variante von nextJokeId++;
+    // var newId = Interlocked.Increment(ref nextJokeId); // Threadsafe Variante von nextJokeId++;
     // Convert DTO into Joke class
     var jokeToAdd = new Joke
     {
-        ID = newId,
         Setup = newJoke.Setup,
         Punchline = newJoke.Punchline,
         FunLevel = newJoke.FunLevel
     };
     // Add Joke to DB
     // Return http-status and joke
-    if (!jokeRepo.TryAdd(newId, jokeToAdd))
+    var joke = context.Joke.Add(jokeToAdd);
+    context.SaveChanges();
+    if (joke == null)
         return Results.StatusCode(StatusCodes.Status500InternalServerError);
-    return Results.Created($"/joke/{newId}", jokeToAdd);
+    return Results.Created($"/joke/{jokeToAdd.ID}", jokeToAdd);
 })
     .Produces<Joke>(StatusCodes.Status201Created)
     .Produces(StatusCodes.Status500InternalServerError)
@@ -107,25 +109,29 @@ app.MapPost("/joke", (CreateJokeDto newJoke) =>
         options.Responses[StatusCodes.Status500InternalServerError.ToString()].Description = "Something went wrong";
         return options;
     });
-app.MapPut("/joke/{id}", (int id, CreateJokeDto updatedJoke) => 
+app.MapPut("/joke/{id}", (int id, CreateJokeDto updatedJoke, JokeContext context) => 
 {
+    var jokeToChange = context.Joke.Find(id);
     // Get current value from dictionary
-    if (!jokeRepo.TryGetValue(id, out Joke? joke))
+    if (jokeToChange == null)
         return Results.NotFound();
     // Change joke
-    joke.Setup = updatedJoke.Setup;
-    joke.Punchline = updatedJoke.Punchline;
-    joke.FunLevel = updatedJoke.FunLevel;
+    jokeToChange.Setup = updatedJoke.Setup;
+    jokeToChange.Punchline = updatedJoke.Punchline;
+    jokeToChange.FunLevel = updatedJoke.FunLevel;
 
+    context.SaveChanges();
     // Send response with joke
-    return Results.Ok(joke);
+    return Results.Ok(jokeToChange);
 });
-app.MapDelete("/joke/{id}", (int id) => 
+app.MapDelete("/joke/{id}", (int id, JokeContext context) => 
 {
-    if (!jokeRepo.Remove(id, out Joke? joke))
+    var jokeToRemove = context.Joke.Find(id);
+    if (jokeToRemove == null)
         return Results.NotFound();
-    
-    return Results.Ok(joke);
+    context.Remove(jokeToRemove);
+    context.SaveChanges();
+    return Results.Ok(jokeToRemove);
 });
 
 app.Run();
