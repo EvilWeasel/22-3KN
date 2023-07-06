@@ -1,9 +1,10 @@
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.OpenApi;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-// Configuration
+// Configuration => Dependency-Injection
 builder.Services.AddEndpointsApiExplorer(); // => API-Dokumentation WebUI
 builder.Services.AddSwaggerGen(options => {
     options.SwaggerDoc("v1", new() {
@@ -18,6 +19,24 @@ builder.Services.AddSwaggerGen(options => {
     });
     options.IncludeXmlComments("""C:\Users\Tobia\source\Unterricht\KN22-3\JokesAPI\bin\Debug\net7.0\JokesAPI.xml""");
 }); // => Generator
+builder.Services.AddDbContext<JokeContext>(options => 
+{
+    options.UseSqlServer("""Server=localhost;User=sa;Password=Diamond!_Yellow_Slug;Database=Jokes;TrustServerCertificate=True""");
+});
+
+#region WasSindStrings
+var string1 = "blabla{asfdsjhk}\ndlkfjsld"; // String
+// var string2 = $"blabla{asfdsjhk}\ndlkfjsld"; // Interpolated-String
+var string3 = """
+
+blabla{asfdsjhk}\ndlkfjsld
+
+
+
+"""; // Sting-Literal
+// Das ist literally nur ein String!
+var string4 = @"blabla{asfdsjhk}\ndlkfjsld"; // String-Literal
+#endregion
 
 var app = builder.Build();
 
@@ -110,28 +129,3 @@ app.MapDelete("/joke/{id}", (int id) =>
 });
 
 app.Run();
-
-// C# XML Inline Documentation
-/// <summary>
-/// Represents a Joke-Object
-/// </summary>
-class Joke
-{
-    public int ID { get; set; } // Id of the Joke => Server-Generated
-	public string Setup { get; set; } = String.Empty; // Setup for the Joke
-    public string Punchline { get; set; } = "";  // The funny bit
-	public int FunLevel { get; set; } // Integer describing the funnyness of the Joke (0..5)
-}
-/// <summary>
-/// DTO => Data-Transfer-Object.
-/// Abbild eines Datenmodells, das für die Übertragung über HTTP verändert wird
-/// </summary>
-record CreateJokeDto(string Setup, string Punchline, int FunLevel);
-
-/*
-    {
-        "Setup": "Wie viele SQL Programmierer braucht man um eine Glühbirne zu tauschen?",
-        "Punchline": "ca. 65-90",
-        "FunLevel": 5
-    }
-*/
