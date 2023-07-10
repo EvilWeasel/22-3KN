@@ -1,0 +1,46 @@
+/* Die Grundlagen zu CSS */
+/* h1 {  h1 => Selektoren für HTML-Elemente 
+    Alles in den geschweiften Klammern: CSS-Regeln 
+    color: rgb(255, 0, 0);
+    font-size: 40px;
+    font-style: italic;
+} */
+
+/*
+    TODO: Font-Face wegen Weight
+*/
+
+.container {
+    display: block;
+    width: 100%;
+}
+
+.link-container {
+    display: inline-block;
+    border: 7px double rgb(170, 0, 255);
+    border-radius: 20px;
+    margin: 5px;
+    padding: 10px;
+}
+/* Selektiert jedes UL-Elem, welches ein Element mit der 
+    Klasse link-container als Parent hat. */
+.link-container > ul {
+    list-style-type: none;
+    padding: 0;
+    /* text-align: start; */
+}
+
+.link-container > ul > li > a {
+    text-decoration: none;
+    color: rgb(0,0,0);
+    font-weight: 600;
+}
+
+.link-container > ul > li > a:hover {
+    color: rgb(170, 0, 255);
+    font-weight: 800;
+}
+
+.link-container > ul > li > a:visited {
+    color: red;
+}
