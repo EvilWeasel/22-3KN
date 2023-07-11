@@ -10,9 +10,18 @@
     TODO: Font-Face wegen Weight
 */
 
+body {
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
 .container {
-    display: block;
+    display: flex;
     width: 100%;
+    flex-wrap: nowrap;
 }
 
 .link-container {
@@ -21,6 +30,8 @@
     border-radius: 20px;
     margin: 5px;
     padding: 10px;
+    height: 25vh;
+    min-height: 180px;
 }
 /* Selektiert jedes UL-Elem, welches ein Element mit der 
     Klasse link-container als Parent hat. */
