@@ -20,6 +20,7 @@
     --color-main: #CC00CC;
     --color-secondary: rgb(170, 0, 255);
     --color-text: #8c8c8c;
+    --box-shadow-default: 5px 5px 5px #000000;
 }
 
 body {
@@ -29,6 +30,23 @@ body {
     background-repeat: no-repeat;
     height: 100vh;
     font-family: 'Roboto Slab';
+}
+
+.window {
+    font-size: 20px;
+}
+
+#clock {
+    text-align: center;
+    font-size: 3.5em;
+    font-family: 'GeileFont';
+    color: var(--color-main);
+    text-shadow: var(--box-shadow-default);
+    font-weight: 900;
+    /* margin-top: 50px;
+    margin-bottom: 50px; */
+    margin: 120px 0 40px 0;
+    /*margin: 50px 0;*/
 }
 
 .container {
@@ -47,9 +65,13 @@ body {
     margin: 5px;
     padding: 10px;
     height: 25vh;
-    min-height: 180px;
+    min-height: 260px;
     width: 20%;
-    background-color: rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,.8);
+}
+
+.link-container > h1 {
+    color: var(--color-main);
 }
 
 /* Selektiert jedes UL-Elem, welches ein Element mit der 
@@ -62,8 +84,9 @@ body {
 
 .link-container > ul > li > a {
     text-decoration: none;
-    color: rgb(0,0,0);
+    color: var(--color-text);
     font-weight: 600;
+    font-size: .8em;
 }
 
 .link-container > ul > li > a:hover {
@@ -75,3 +98,23 @@ body {
 .link-container > ul > li > a:visited {
     color: red;
 } */
+
+/* Beispiele für CSS-Selektoren */
+/* 
+HTML-Elemente 
+h1, p, ul {
+
+}
+CSS Klassen
+.container {
+
+}
+ID des Elements
+#oma {
+
+}
+Kombination
+div.container#main {
+
+}
+*/
