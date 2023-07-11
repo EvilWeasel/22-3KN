@@ -7,8 +7,20 @@
 } */
 
 /*
-    TODO: Font-Face wegen Weight
+    Wenn man eine Font aus einer Datei in CSS verwenden
+    möchte, dann muss man dafür ein "Font-Face" deklarieren.
+    Bei Google Fonts ist das NICHT notwendig...
 */
+@font-face {
+    font-family: 'GeileFont';
+    src: url('Matrix-MZ4P.ttf') format('truetype');
+}
+
+:root {
+    --color-main: #CC00CC;
+    --color-secondary: rgb(170, 0, 255);
+    --color-text: #8c8c8c;
+}
 
 body {
     background-image: url('background.jpg');
@@ -16,23 +28,30 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
+    font-family: 'Roboto Slab';
 }
 
 .container {
     display: flex;
+    flex-direction: row; /* Ändert die Primärachse der Flexbox */
     width: 100%;
     flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center; /*?????*/
 }
 
 .link-container {
     display: inline-block;
-    border: 7px double rgb(170, 0, 255);
+    border: 7px double var(--color-secondary);
     border-radius: 20px;
     margin: 5px;
     padding: 10px;
     height: 25vh;
     min-height: 180px;
+    width: 20%;
+    background-color: rgba(0,0,0,.4);
 }
+
 /* Selektiert jedes UL-Elem, welches ein Element mit der 
     Klasse link-container als Parent hat. */
 .link-container > ul {
@@ -48,10 +67,11 @@ body {
 }
 
 .link-container > ul > li > a:hover {
-    color: rgb(170, 0, 255);
+    color: var(--color-secondary);
     font-weight: 800;
 }
 
+/*
 .link-container > ul > li > a:visited {
     color: red;
-}
+} */
