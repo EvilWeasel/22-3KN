@@ -72,6 +72,7 @@ body {
 
 .link-container > h1 {
     color: var(--color-main);
+    margin-top: 10px;
 }
 
 /* Selektiert jedes UL-Elem, welches ein Element mit der 
@@ -93,6 +94,42 @@ body {
     color: var(--color-secondary);
     font-weight: 800;
 }
+
+/* Media-Query */
+@media only screen and (max-width: 897px) {
+    /* Regeln für Mobile-Layout */
+    body {
+        background-image: url('background-mobile.jpg');
+        background-attachment: scroll;
+        height: 100%;
+        /* overflow-y: scroll; => Default Scroll */
+    }
+
+    #clock {
+        margin-top: 3rem;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .link-container {
+        width: 80%;
+        font-size: 1.1em;
+        padding: 1.4em;
+    }
+
+    .link-container > h1 {
+        margin-top: 0;
+    }
+
+    .link-container > ul > li > a {
+        font-size: 1em;
+    }
+}
+
+
+
 
 /*
 .link-container > ul > li > a:visited {
