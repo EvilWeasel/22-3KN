@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ergebnis</title>
+</head>
+<body onload="evalFormResults()">
+    <h1>Formulardaten</h1>
+    <p>Vorname: <span id="vorname"></span></p>
+    <p>Nachname: <span id="nachname"></span></p>
+    <p>Email: <span id="email"></span></p>
+    <script>
+        function evalFormResults() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const vorname = urlParams.get('vorname');
+            const nachname = urlParams.get('nachname');
+            const email = urlParams.get('email');
+            
+
+            document.getElementById('vorname').innerText = vorname;
+            document.getElementById('nachname').innerText = nachname;
+            document.getElementById('email').innerText = email;
+
+
+            console.log(window.location.search);
+        }
+    </script>
+</body>
+</html>

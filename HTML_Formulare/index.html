@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulare</title>
+    <style>
+        label, input {
+            display: block;
+        }
+        /* input {
+            font-size: 20px;
+            background-color: #8c8c8c;
+        } */
+    </style>
+</head>
+<body>
+    <form action="result.html" method="get">
+        <label for="vorname">Vorname</label>
+        <input id="vorname"
+            type="text"
+            placeholder="max"
+            name="vorname">
+        <label for="nachname">Nachname</label>
+        <input id="nachname"
+            type="text"
+            placeholder="mustermann"
+            name="nachname">
+        <label for="email">Email</label>
+        <input type="email"
+            id="email"
+            placeholder="max.mustermann@aol.de"
+            name="email">
+            
+        <label for="tel">Phone</label>
+        <input type="tel"
+            id="tel"
+            placeholder="555-nase"
+            name="tel">
+
+        <label for="age">Alter</label>
+        <input type="number"
+                id="age"
+                placeholder="42"
+                name="age">
+
+        <input type="date"
+            id="date"
+            name="date">
+
+        <input type="time"
+            id="time"
+            name="time">
+        
+        <div>
+            <label for="html">HTML/CSS/JS</label>
+            <input type="radio"
+                name="radio"
+                id="html"
+                value="HTML/CSS/JS">
+            <label for="c#">C#</label>
+            <input type="radio"
+                name="radio"
+                id="c#"
+                value="C#">
+            <label for="sql">SQL</label>
+            <input type="radio"
+                name="radio"
+                id="sql"
+                value="SQL">
+        </div>
+
+        <input type="file" name="file" id="file">
+
+        <button type="reset">Reset!</button>
+        <button type="submit">Abschicken!</button>
+    </form>
+</body>
+</html>
