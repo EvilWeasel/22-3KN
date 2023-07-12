@@ -112,7 +112,9 @@ body {
     }
 
     .container {
-        flex-direction: column;
+        flex-direction: column; /* Wechselt die Primärachse */
+        align-items: center; /* Cross-Axis */
+        justify-content: center; /* Primary-Axis */
     }
 
     .link-container {
