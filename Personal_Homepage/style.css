@@ -21,6 +21,7 @@
     --color-secondary: rgb(170, 0, 255);
     --color-text: #8c8c8c;
     --box-shadow-default: 5px 5px 5px #000000;
+    --background-transparent: rgba(0,0,0,.8);
 }
 
 body {
@@ -67,7 +68,7 @@ body {
     height: 40vh;
     min-height: 260px;
     width: 20%;
-    background-color: rgba(0,0,0,.8);
+    background-color: var(--background-transparent);
 }
 
 .link-container > h1 {
@@ -95,6 +96,12 @@ body {
     font-weight: 900;
     transition: all .5s cubic-bezier(.67,.11,.15,.99);
     font-size: 1.6em;
+}
+
+#joke {
+    background-color: var(--background-transparent);
+    color: var(--color-text);
+    margin-top: 1em;
 }
 
 /* Media-Query */
