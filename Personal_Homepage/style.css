@@ -54,7 +54,7 @@ body {
     flex-direction: row; /* Ändert die Primärachse der Flexbox */
     width: 100%;
     flex-wrap: nowrap;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center; /*?????*/
 }
 
@@ -64,7 +64,7 @@ body {
     border-radius: 20px;
     margin: 5px;
     padding: 10px;
-    height: 25vh;
+    height: 40vh;
     min-height: 260px;
     width: 20%;
     background-color: rgba(0,0,0,.8);
@@ -87,12 +87,14 @@ body {
     text-decoration: none;
     color: var(--color-text);
     font-weight: 600;
-    font-size: .8em;
+    font-size: 1.5em;
 }
 
 .link-container > ul > li > a:hover {
     color: var(--color-secondary);
-    font-weight: 800;
+    font-weight: 900;
+    transition: all .5s cubic-bezier(.67,.11,.15,.99);
+    font-size: 1.6em;
 }
 
 /* Media-Query */
@@ -117,6 +119,7 @@ body {
         width: 80%;
         font-size: 1.1em;
         padding: 1.4em;
+        height: fit-content;
     }
 
     .link-container > h1 {
@@ -124,11 +127,32 @@ body {
     }
 
     .link-container > ul > li > a {
-        font-size: 1em;
+        font-size: 1.5em;
+    }
+
+    .link-container > ul > li > a:hover {
+        color: var(--color-secondary);
+        font-weight: 900;
+        transition: all .5s cubic-bezier(.67,.11,.15,.99);
+        font-size: 1.7em;
     }
 }
 
-
+@media only screen and (max-width: 1350px) {
+    .link-container > ul > li > a {
+        text-decoration: none;
+        color: var(--color-text);
+        font-weight: 600;
+        font-size: 1em;
+    }
+    
+    .link-container > ul > li > a:hover {
+        color: var(--color-secondary);
+        font-weight: 900;
+        transition: all .5s cubic-bezier(.67,.11,.15,.99);
+        font-size: 1.1em;
+    }
+}
 
 
 /*
